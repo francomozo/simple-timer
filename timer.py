@@ -12,7 +12,7 @@ def timer(t):
 	while t:
 		MM, SS = divmod(t, 60)
 
-		print(f'===== {MM:02d}:{SS:02d} =====', end="\r") 
+		print(f'=== {MM:02d}:{SS:02d} ===', end="\r") 
 		# \r moves the cursor to the beginning of the 
 		# line and then keeps outputting characters as normal
 		
@@ -29,13 +29,10 @@ def end_sound():
 
 def main():
 	MM, SS = input("Time in MM:SS -> ").split(":")
-	
 	MM, SS = int(MM), int(SS)
-	
 	t = MM * 60 + SS
-
-	timer(t)
 	
+	timer(t)
 	end_sound()
 
 main()
