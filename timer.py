@@ -22,6 +22,10 @@ def timer(t):
 	
 	return
 
+def end_sound():
+	duration = 1  # secs
+	freq = 391.995  # It's a G
+	os.system(f'play -nq -t alsa synth {duration} sine {freq}')
 
 def main():
 	MM, SS = input("Time in MM:SS -> ").split(":")
@@ -31,5 +35,7 @@ def main():
 	t = MM * 60 + SS
 
 	timer(t)
+	
+	end_sound()
 
 main()
