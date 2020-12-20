@@ -71,7 +71,7 @@ def pomodoro_technique():
 
 		sprint += 1
 		print(f' Sprint {sprint} completed')
-		time.sleep(5)
+		time.sleep(2)
 
 def main():
 	os.system('clear')
