@@ -1,12 +1,14 @@
 import time
 import os
+from sys import platform
+
+mac = True if platform == 'darwin' else False
 
 def timer(t, label):
 	"""
 	Takes time t in seconds.
 	Performs countdown and prints the timer.
 	"""
-
 
 	while t >= 0:
 		MM, SS = divmod(t, 60)
@@ -19,15 +21,19 @@ def timer(t, label):
 		# line and then keeps outputting characters as normal
 
 		time.sleep(1)
-
 		t -= 1
 	return
 
-def end_sound(freq, duration, times):
+def end_sound(freq, duration, times, finished=False):
 	#duration = 1  # secs
-	for _ in range(times):
-		os.system(f'play -nq -t alsa synth {duration} sine {freq}')
-
+	if not mac:
+		for _ in range(times):
+			os.system(f'play -nq -t alsa synth {duration} sine {freq}')
+	else:
+		if not finished:
+			os.system('say "Focus time."')
+		else:
+			os.system('say "Brake time."')
 
 # ================================================================================
 def simple_timer():
@@ -67,7 +73,7 @@ def pomodoro_technique():
 
 		t_rest = MM_rest * 60 + SS_rest
 		timer(t_rest, label="Rest ")
-		end_sound(freq, duration=.5, times=2)
+		end_sound(freq, duration=.5, times=2, finished=True)
 
 		sprint += 1
 		print(f' Sprint {sprint} completed')
