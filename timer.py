@@ -4,6 +4,7 @@ from sys import platform
 
 mac = True if platform == 'darwin' else False
 
+
 def timer(t, label):
 	"""
 	Takes time t in seconds.
@@ -68,12 +69,12 @@ def pomodoro_technique():
 
 		t_study = MM_study * 60 + SS_study
 		timer(t_study, label="Study")
-		end_sound(freq, duration=1, times=1)
+		end_sound(freq, duration=1, times=1, finished=True)
 
 
 		t_rest = MM_rest * 60 + SS_rest
 		timer(t_rest, label="Rest ")
-		end_sound(freq, duration=.5, times=2, finished=True)
+		end_sound(freq, duration=.5, times=2)
 
 		sprint += 1
 		print(f' Sprint {sprint} completed')
