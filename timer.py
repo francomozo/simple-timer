@@ -25,16 +25,15 @@ def timer(t, label):
 		t -= 1
 	return
 
-def end_sound(freq, duration, times, finished=False):
+def sound(sound=None, message=None):
+	if sound: 
+		freq, duration, times = sound
 	#duration = 1  # secs
 	if not mac:
 		for _ in range(times):
 			os.system(f'play -nq -t alsa synth {duration} sine {freq}')
 	else:
-		if not finished:
-			os.system('say "Focus time."')
-		else:
-			os.system('say "Brake time."')
+		os.system(f'say "{message}"')
 
 # ================================================================================
 def simple_timer():
@@ -61,20 +60,21 @@ def pomodoro_technique():
 
 	os.system('clear')
 
-	freq = 391.995  # It's a G
 	sprint = 0
-
+	freq,times, duration= 391.995, 1, 1
 	while True:
-		end_sound(freq=440, duration=1, times=1)
+		# You can pass the tuple as parameters by puting an asterisc like this:
+		# function(*vairable=name) 
+		sound(None, message='Focus time')
 
 		t_study = MM_study * 60 + SS_study
 		timer(t_study, label="Study")
-		end_sound(freq, duration=1, times=1, finished=True)
+		sound(None, message='Rest time')
 
 
 		t_rest = MM_rest * 60 + SS_rest
 		timer(t_rest, label="Rest ")
-		end_sound(freq, duration=.5, times=2)
+		sound(None, message='Sprint completed')
 
 		sprint += 1
 		print(f' Sprint {sprint} completed')
@@ -91,5 +91,5 @@ def main():
 	else:
 		print("Invalid option.")
 
-
-main()
+if __name__ == '__main__':
+	main()
