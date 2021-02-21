@@ -1,6 +1,9 @@
 import time
 import os
 from sys import platform
+import threading
+from input_sound import start_listening
+
 
 mac = True if platform == 'darwin' else False
 
@@ -48,7 +51,7 @@ def simple_timer():
 	print("Finished")
 
 	freq = 391.995  # It's a G
-	end_sound(freq, duration=1, times=1)
+	sound(freq, duration=1, times=1)
 
 # ================================================================================
 def pomodoro_technique():
@@ -59,31 +62,34 @@ def pomodoro_technique():
 	MM_rest, SS_rest = int(MM_rest), int(SS_rest)
 
 	os.system('clear')
-
+	
 	sprint = 0
 	freq,times, duration= 391.995, 1, 1
+	t = threading.Thread(target=start_listening, args=(MM_study*60+SS_rest,))
 	while True:
 		# You can pass the tuple as parameters by puting an asterisc like this:
 		# function(*vairable=name) 
 		sound(None, message='Focus time')
-
+		t.start()
 		t_study = MM_study * 60 + SS_study
 		timer(t_study, label="Study")
+		
+		t.do_run = False
+		t.join()
 		sound(None, message='Rest time')
 
 
 		t_rest = MM_rest * 60 + SS_rest
 		timer(t_rest, label="Rest ")
-		sound(None, message='Sprint completed')
 
 		sprint += 1
+		sound(None, message=f'Sprint {sprint} completed')
 		print(f' Sprint {sprint} completed')
 		time.sleep(2)
 
 def main():
 	os.system('clear')
 	mode = input("Press (p) for Pomodoro Technique, (s) for Simple Timer: ")
-
 	if mode == "s":
 		simple_timer()
 	elif mode == "p":
