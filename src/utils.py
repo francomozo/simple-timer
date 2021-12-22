@@ -29,3 +29,14 @@ def end_sound(freq, duration, times):
     # duration = 1  # secs
     for _ in range(times):
     	os.system(f'play -nq -t alsa synth {duration} sine {freq}')
+
+
+def echo_html(ts, label):
+    with open('html/index.html', 'r') as file:
+        data = file.readlines()
+
+    data[19] = f'<p> {label} </p>\n'    
+    data[25] = f'var date = "{ts}";\n'
+
+    with open('html/index.html', 'w') as file:
+        file.writelines(data)

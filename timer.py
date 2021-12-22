@@ -1,5 +1,6 @@
 import argparse
 import os
+from datetime import date
 
 from src.timers import *
 
@@ -13,16 +14,28 @@ group.add_argument('-s','--simple', nargs='+',
 group.add_argument('-d','--default', 
                 help='Defaults for Pomodoro Study/Rest. Options: A:(30/30), B:(40/20), C:(45/15), D:(50/10).')
 
+
+
 params = vars(ap.parse_args())
 
 os.system('clear')
 
 pomodoro_defaults = {'A': [30, 30], 'B': [40, 20], 'C': [45, 15], 'D': [50, 10]}
 
+# Logging
+today = date.today()
+today = today.strftime("%d-%m-%y")
+
+log_dir = 'log/'
+if not os.path.exists(log_dir):
+	os.makedirs(log_dir)
+
+f = open(log_dir + today,'a')
+
 if params['pomodoro'] is not None:
 	MM_study = int(params['pomodoro'][0])
 	MM_rest = int(params['pomodoro'][1])
-	pomodoro_technique(MM_study, MM_rest)
+	pomodoro_technique(MM_study, MM_rest, f=f)
 if params['simple'] is not None:
 	MM = int(params['simple'][0])
 	SS = int(params['simple'][1])
@@ -30,4 +43,6 @@ if params['simple'] is not None:
 else:
 	MM_study = pomodoro_defaults[params['default']][0]
 	MM_rest = pomodoro_defaults[params['default']][1]
-	pomodoro_technique(MM_study, MM_rest)
+	pomodoro_technique(MM_study, MM_rest, f)
+
+f.close()
